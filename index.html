@@ -37,48 +37,68 @@
             </v-col>
             <v-col cols="12" sm="3" class="d-flex justify-space-around">
               <v-card flat>
-                <v-btn @click="resetInOrder()"><v-icon small class="ma-2">fas fa-arrow-right</v-icon>In Order</v-btn>
+                <v-btn @click="resetInOrder()" class="secondary"><v-icon small class="ma-2">fas
+                    fa-arrow-right</v-icon>In Order</v-btn>
               </v-card>
             </v-col>
 
             <v-col cols="12" sm="3" class="d-flex justify-space-around">
               <v-card flat>
-                <v-btn @click="resetReverseOrder()"><v-icon small class="ma-2">fas fa-arrow-left</v-icon>Reverse
+                <v-btn @click="resetReverseOrder()" class="secondary"><v-icon small class="ma-2">fas
+                    fa-arrow-left</v-icon>Reverse
                   Order</v-btn>
               </v-card>
             </v-col>
             <v-col cols="12" sm="3" class="d-flex justify-space-around">
               <v-card flat>
-                <v-btn @click="resetRandom()"><v-icon small class="ma-2">fas fa-refresh</v-icon>Random</v-btn>
+                <v-btn @click="resetRandom()" class="secondary"><v-icon small class="ma-2">fas
+                    fa-refresh</v-icon>Random</v-btn>
               </v-card>
             </v-col>
           </v-row>
-          <v-row class="grey lighten-1 ma-3">
-            <v-col cols="6" sm="3" md="2" v-for="(card,index) in cards" :key="card.name">
-              <v-card :dark="!shown.includes(index)" @click="click(index)">
-                <v-card-title>
-                  <span v-if="shown.includes(index)" class="text-subtitle-1">{{card.name}}</span>
-                  <span v-else class="text-subtitle-1">?</span>
-                  <v-spacer></v-spacer>
-                  <span class="text-caption">[Index {{index}}]</span>
-                </v-card-title>
-              </v-card>
-            </v-col>
+          <v-row class="ma-4 text-title">
+            <v-spacer>
+            </v-spacer>
+            Use the controls below to change the array. Like a computer, you can only see two values at a time.
+            <v-spacer></v-spacer>
           </v-row>
-          <v-row class="ma-3">
-            <v-col cols="12" sm="3" class="d-flex justify-space-around">
-              <v-card flat>
-                <v-btn text>
-                Actions:
-                </v-btn>
-              </v-card>
-            </v-col>
-            <v-col cols="12" sm="3" class="d-flex justify-space-around">
-              <v-card flat>
-                <v-btn @click="swap()"><v-icon small class="ma-2">fas fa-exchange</v-icon>Swap {{cards[shown[0]].name}} and {{cards[shown[1]].name}}</v-btn>
-              </v-card>
-            </v-col>
-          </v-row>
+
+          <div class="grey lighten-1 pa-5">
+            <v-row>
+              <v-col cols="6" sm="3" md="2" v-for="(card,index) in cards" :key="card.name">
+                <v-card @click="click(index)">
+                  <v-img :src="showAll || shown.includes(index) ? images[card.name-1] : './images/black.png'" height="200px">
+                    <v-app-bar flat dense color="rgba(255,255,255,.4)">
+                      <v-toolbar-title>
+                        <span v-if="shown.includes(index)">{{card.name}}</span>
+                        <span v-else class="text-subtitle-1">?</span>
+                      </v-toolbar-title>
+                    </v-app-bar>
+                  </v-img>
+                </v-card>
+              </v-col>
+            </v-row>
+            <v-row class="ma-3">
+              <v-col cols="12" sm="3" class="d-flex justify-space-around">
+                <v-card flat>
+                  <v-btn text>
+                    Actions:
+                  </v-btn>
+                </v-card>
+              </v-col>
+              <v-col cols="12" sm="3" class="d-flex justify-space-around">
+                <v-card flat>
+                  <v-btn @click="swap()" class="primary"><v-icon small class="ma-2">fas fa-exchange</v-icon>Swap
+                    {{cards[shown[0]].name}} and {{cards[shown[1]].name}}</v-btn>
+                </v-card>
+              </v-col>
+              <v-col cols="12" sm="3" class="d-flex justify-space-around">
+                <v-card flat>
+                  <v-btn @click="show()" class="secondary"><v-icon small class="ma-2">fas fa-eye</v-icon>Toggle Show All</v-btn>
+                </v-card>
+              </v-col>
+            </v-row>
+          </div>
 
         </v-container>
       </v-main>
@@ -90,9 +110,30 @@
 
     const app = new Vue({
       el: '#app',
-      vuetify: new Vuetify(),
+      vuetify: new Vuetify({
+        theme: {
+          themes: {
+            light: {
+              primary: '#3f51b5',
+              secondary: '#b0bec5',
+              accent: '#8c9eff',
+              error: '#b71c1c',
+            },
+
+          }
+        }
+      }),
       data: {
         shown: [0, 1],
+        showAll:false,
+        images: [
+          "./images/mountains0.png",
+          "./images/mountains1.png",
+          "./images/mountains2.png",
+          "./images/mountains3.png",
+          "./images/mountains4.png",
+          "./images/mountains5.png",
+        ],
         cards: [
           {
             name: 1
@@ -136,6 +177,9 @@
         resetRandom() {
           this.shown = [0, 1];
           this.cards = [{ name: 6 }, { name: 1 }, { name: 5 }, { name: 2 }, { name: 4 }, { name: 3 },]
+        },
+        show(){
+          this.showAll = !this.showAll;
         }
 
       },
