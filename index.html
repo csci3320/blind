@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+
+<head>
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js'></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <link href="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" rel="icon"
+    type="image/x-icon" /><!--tiny.cc/emptyimage-->
+</head>
+
+<body>
+  <div id='app'>
+    <v-app>
+      <v-main>
+        <v-container>
+          <v-row class="ma-4 text-h4">
+            <v-spacer>
+            </v-spacer>
+            The blind computer sandbox
+            <v-spacer></v-spacer>
+          </v-row>
+          <v-row class="ma-3">
+            <v-col cols="12" sm="3" class="d-flex justify-space-around">
+              <v-card flat>
+                <v-btn text>Reset:</v-btn>
+              </v-card>
+            </v-col>
+            <v-col cols="12" sm="3" class="d-flex justify-space-around">
+              <v-card flat>
+                <v-btn @click="resetInOrder()"><v-icon small class="ma-2">fas fa-arrow-right</v-icon>In Order</v-btn>
+              </v-card>
+            </v-col>
+
+            <v-col cols="12" sm="3" class="d-flex justify-space-around">
+              <v-card flat>
+                <v-btn @click="resetReverseOrder()"><v-icon small class="ma-2">fas fa-arrow-left</v-icon>Reverse
+                  Order</v-btn>
+              </v-card>
+            </v-col>
+            <v-col cols="12" sm="3" class="d-flex justify-space-around">
+              <v-card flat>
+                <v-btn @click="resetRandom()"><v-icon small class="ma-2">fas fa-refresh</v-icon>Random</v-btn>
+              </v-card>
+            </v-col>
+          </v-row>
+          <v-row class="grey lighten-1 ma-3">
+            <v-col cols="6" sm="3" md="2" v-for="(card,index) in cards" :key="card.name">
+              <v-card :dark="!shown.includes(index)" @click="click(index)">
+                <v-card-title>
+                  <span v-if="shown.includes(index)" class="text-subtitle-1">{{card.name}}</span>
+                  <span v-else class="text-subtitle-1">?</span>
+                  <v-spacer></v-spacer>
+                  <span class="text-caption">[Index {{index}}]</span>
+                </v-card-title>
+              </v-card>
+            </v-col>
+          </v-row>
+          <v-row class="ma-3">
+            <v-col cols="12" sm="3" class="d-flex justify-space-around">
+              <v-card flat>
+                <v-btn text>
+                Actions:
+                </v-btn>
+              </v-card>
+            </v-col>
+            <v-col cols="12" sm="3" class="d-flex justify-space-around">
+              <v-card flat>
+                <v-btn @click="swap()"><v-icon small class="ma-2">fas fa-exchange</v-icon>Swap {{cards[shown[0]].name}} and {{cards[shown[1]].name}}</v-btn>
+              </v-card>
+            </v-col>
+          </v-row>
+
+        </v-container>
+      </v-main>
+    </v-app>
+  </div>
+
+
+  <script>
+
+    const app = new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+      data: {
+        shown: [0, 1],
+        cards: [
+          {
+            name: 1
+          },
+          {
+            name: 2
+          },
+          {
+            name: 3
+          },
+          {
+            name: 4
+          },
+          {
+            name: 5
+          },
+          {
+            name: 6
+          },
+        ],
+      },
+      methods: {
+        click(index) {
+          if (this.shown.includes(index)) return;
+          this.shown.push(index)
+          this.shown.splice(0, 1);
+        },
+        swap() {
+          let temp = this.cards[this.shown[0]];
+          Vue.set(this.cards, this.shown[0], this.cards[this.shown[1]])
+          Vue.set(this.cards, this.shown[1], temp)
+        },
+        resetInOrder() {
+          this.shown = [0, 1];
+          this.cards = [{ name: 1 }, { name: 2 }, { name: 3 }, { name: 4 }, { name: 5 }, { name: 6 },]
+        },
+        resetReverseOrder() {
+          this.shown = [0, 1];
+          this.cards = [{ name: 6 }, { name: 5 }, { name: 4 }, { name: 3 }, { name: 2 }, { name: 1 },]
+        },
+        resetRandom() {
+          this.shown = [0, 1];
+          this.cards = [{ name: 6 }, { name: 1 }, { name: 5 }, { name: 2 }, { name: 4 }, { name: 3 },]
+        }
+
+      },
+    });
+
+  </script>
+</body>
+
+</html>
