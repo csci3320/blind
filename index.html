@@ -30,29 +30,35 @@
             <v-spacer></v-spacer>
           </v-row>
           <v-row class="ma-3">
-            <v-col cols="12" sm="3" class="d-flex justify-space-around">
+            <v-col cols="12" sm="2" class="d-flex justify-space-around">
               <v-card flat>
                 <v-btn text>Reset:</v-btn>
               </v-card>
             </v-col>
-            <v-col cols="12" sm="3" class="d-flex justify-space-around">
+            <v-col cols="12" sm="2" class="d-flex justify-space-around">
               <v-card flat>
                 <v-btn @click="resetInOrder()" class="secondary"><v-icon small class="ma-2">fas
                     fa-arrow-right</v-icon>In Order</v-btn>
               </v-card>
             </v-col>
 
-            <v-col cols="12" sm="3" class="d-flex justify-space-around">
+            <v-col cols="12" sm="2" class="d-flex justify-space-around">
               <v-card flat>
                 <v-btn @click="resetReverseOrder()" class="secondary"><v-icon small class="ma-2">fas
                     fa-arrow-left</v-icon>Reverse
                   Order</v-btn>
               </v-card>
             </v-col>
-            <v-col cols="12" sm="3" class="d-flex justify-space-around">
+            <v-col cols="12" sm="2" class="d-flex justify-space-around">
               <v-card flat>
                 <v-btn @click="resetRandom()" class="secondary"><v-icon small class="ma-2">fas
                     fa-refresh</v-icon>Random</v-btn>
+              </v-card>
+            </v-col>
+            <v-col cols="12" sm="1" class="d-flex justify-space-around">
+              <v-card flat>
+                <v-btn @click="resetRandomWDuplicates()" class="secondary"><v-icon small class="ma-2">fas
+                    fa-refresh</v-icon>Random w/ Duplicates</v-btn>
               </v-card>
             </v-col>
           </v-row>
@@ -65,7 +71,7 @@
 
           <div class="grey lighten-1 pa-5">
             <v-row>
-              <v-col cols="6" sm="3" md="2" v-for="(card,index) in cards" :key="card.name">
+              <v-col cols="6" sm="3" md="2" v-for="(card,index) in cards" :key="card.name + Math.random()">
                 <v-card @click="click(index)" :elevation="shown.includes(index) ? 10 : 0" square>
                   <v-img :src="showAll || shown.includes(index) ? images[card.name-1] : './images/black.png'" height="200px">
                     <v-app-bar flat dense color="rgba(255,255,255,.4)">
@@ -177,6 +183,10 @@
         resetRandom() {
           this.shown = [0, 1];
           this.cards = [{ name: 6 }, { name: 1 }, { name: 5 }, { name: 2 }, { name: 4 }, { name: 3 },]
+        },
+        resetRandomWDuplicates() {
+          this.shown = [0, 1];
+          this.cards = [{ name: Math.floor(Math.random()*6) }, { name: Math.floor(Math.random()*6) }, { name: Math.floor(Math.random()*6) }, { name: Math.floor(Math.random()*6) }, { name: Math.floor(Math.random()*6) }, { name: Math.floor(Math.random()*6) },]
         },
         show(){
           this.showAll = !this.showAll;
